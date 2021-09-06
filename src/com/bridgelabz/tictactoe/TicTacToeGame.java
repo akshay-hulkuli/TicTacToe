@@ -89,6 +89,23 @@ public class TicTacToeGame {
 		currentPlayer = (currentPlayer==0)?1:0;
 	}
 	
+	public static char[] computerMove(char[] board, char computerLetter) {
+		board[7]='O';
+		board[5]='O';
+		int count = 0;
+		for(int i=0; i<8;i++) {
+			count = 0;
+			for(int j=0;j<3;j++) {
+				if(board[winningPositions[i][j]] == computerLetter) count++;
+			}
+			if(count == 2) {
+				for(int j=0;j<3;j++) board[winningPositions[i][j]] = computerLetter ;
+				break;
+			}
+		}
+		return board;
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
 		currentPlayer = getToss();
@@ -99,7 +116,11 @@ public class TicTacToeGame {
 		showBoard(board);
 		board = makeMove(board,playerLetter);
 		showBoard(board);
+		board = makeMove(board,playerLetter);
+		showBoard(board);
+		board = computerMove(board, computerLetter);
 		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
 		resultFinder(board, currentLetter);
+		showBoard(board);
 	}
 }
