@@ -9,7 +9,7 @@ public class TicTacToeGame {
 	}
 	public void creatBoard() {
 		for(int i=0;i<10;i++) {
-			board[i] = 0;
+			board[i] = ' ';
 		}
 	}
 	public static void main(String[] args) {
