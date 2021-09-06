@@ -3,7 +3,11 @@ package com.bridgelabz.tictactoe;
 import java.util.Scanner;
 
 public class TicTacToeGame {
+	private static int currentPlayer;
+	private static char computerLetter,playerLetter; 
 	static Scanner sc = new Scanner(System.in);
+	private static int positionsLeft = 9;
+	private static int [][] winningPositions = {{1,2,3}, {4,5,6}, {7,8,9}, {1,4,7}, {2,5,8}, {3,6,9},{1,5,9}, {3,5,7}};
 	public static char[] creatBoard() {
 		char[] board = new char[10];
 		for(int i=0;i<10;i++) {
@@ -48,6 +52,7 @@ public class TicTacToeGame {
 		}
 		
 		board[position] = playerLetter;
+		positionsLeft--;
 		return board;
 	}
 	
@@ -65,15 +70,36 @@ public class TicTacToeGame {
 		}
 	}
 	
+	public static void resultFinder(char[] board, char currentLetter) {
+		if(positionsLeft == 0) {
+			System.out.println("the game ended in a tie");
+			showBoard(board);
+			return;
+		}
+		
+		for(int i=0;i<8;i++) {
+			if(board[winningPositions[i][0]] == currentLetter && board[winningPositions[i][1]] == currentLetter && board[winningPositions[i][2]] == currentLetter) {
+				System.out.println();
+				System.out.println("****The "+(currentPlayer == 1?"User":"Computer")+" is the winner****");
+				showBoard(board);
+				return;
+			}
+		}
+		
+		currentPlayer = (currentPlayer==0)?1:0;
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
-		int currentUser = getToss();
+		currentPlayer = getToss();
 		char[] board = creatBoard();
-		char playerLetter = selectLetter();
-		char computerLetter = (playerLetter == 'X')?'O':'X';
+		playerLetter = selectLetter();
+		computerLetter = (playerLetter == 'X')?'O':'X';
 		System.out.println("Player letter : "+playerLetter+"  Computer letter : "+ computerLetter);
 		showBoard(board);
 		board = makeMove(board,playerLetter);
 		showBoard(board);
+		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
+		resultFinder(board, currentLetter);
 	}
 }
