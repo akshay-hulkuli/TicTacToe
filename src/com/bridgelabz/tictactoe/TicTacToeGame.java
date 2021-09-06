@@ -46,7 +46,7 @@ public class TicTacToeGame {
 	public static char[] makeMove(char[] board, char playerLetter) {
 		int position;
 		while(true) {
-			System.out.println("Enter position(1-9) to make your move");
+			System.out.println("\nEnter position(1-9) to make your move");
 			position = sc.nextInt();
 			if(board[position] != ' ') System.out.println("Position is not available");
 			else break;
@@ -66,31 +66,32 @@ public class TicTacToeGame {
 			return 1;
 		}
 		else{
-			System.out.println("You have lost the toss.");
+			System.out.println("You have lost the toss. Computer will play first");
 			return 0;
 		}
 	}
 	
-	public static void resultFinder(char[] board, char currentLetter) {
-		if(positionsLeft == 0) {
-			System.out.println("the game ended in a tie");
-			showBoard(board);
-			return;
-		}
-		
+	public static boolean resultFinder(char[] board, char currentLetter) {
+
 		for(int i=0;i<8;i++) {
 			if(board[winningPositions[i][0]] == currentLetter && board[winningPositions[i][1]] == currentLetter && board[winningPositions[i][2]] == currentLetter) {
 				System.out.println();
-				System.out.println("****The "+(currentPlayer == 1?"User":"Computer")+" is the winner****");
-				showBoard(board);
-				return;
+				System.out.println("\n****The "+(currentPlayer == 1?"User":"Computer")+" is the winner****");
+				return true;
 			}
 		}
-		
+		if(positionsLeft == 0) {
+			System.out.println("\n*****the game ended in a tie******");
+			return true;
+		}
 		currentPlayer = (currentPlayer==0)?1:0;
+		return false;
 	}
 	
+	
 	public static char[] computerMove(char[] board, char computerLetter) {
+		positionsLeft--;
+		System.out.println("\nComputer has player its move");
 		if(findWinningMove(board)) return board;
 		if(findBlockingMove(board)) return board;
 		if(getCorner(board)) return board;
@@ -174,18 +175,22 @@ public class TicTacToeGame {
 	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
-		currentPlayer = getToss();
-		char[] board = creatBoard();
-		playerLetter = selectLetter();
-		computerLetter = (playerLetter == 'X')?'O':'X';
-		System.out.println("Player letter : "+playerLetter+"  Computer letter : "+ computerLetter);
-		showBoard(board);
-
-		showBoard(board);
-		board = computerMove(board, computerLetter);
-		showBoard(board);
-		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
-		resultFinder(board, currentLetter);
-		
+			
+			char[] board = creatBoard();
+			positionsLeft = 9;
+			playerLetter = selectLetter();
+			computerLetter = (playerLetter == 'X')?'O':'X';
+			System.out.println("Player letter : "+playerLetter+"  Computer letter : "+ computerLetter);
+			currentPlayer = getToss();
+			showBoard(board);
+			while(true) {
+				if(currentPlayer == 1) makeMove(board, playerLetter);
+				else computerMove(board, computerLetter);
+				showBoard(board);
+				char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
+				if(resultFinder(board, currentLetter)) break;
+			}
+			System.out.println();
+			
 	}
 }
