@@ -51,8 +51,23 @@ public class TicTacToeGame {
 		return board;
 	}
 	
+	public static int  getToss() {
+		System.out.println("select  0:tail 1: head");
+		int option = sc.nextInt();
+		int tossResult = (int) (Math.floor(Math.random()*10)) %2;
+		if(option == tossResult) {
+			System.out.println("You won the toss. you will play first");
+			return 1;
+		}
+		else{
+			System.out.println("You have lost the toss.");
+			return 0;
+		}
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
+		int currentUser = getToss();
 		char[] board = creatBoard();
 		char playerLetter = selectLetter();
 		char computerLetter = (playerLetter == 'X')?'O':'X';
