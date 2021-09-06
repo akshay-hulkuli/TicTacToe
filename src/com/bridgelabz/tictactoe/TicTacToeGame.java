@@ -1,6 +1,7 @@
 package com.bridgelabz.tictactoe;
 
-import java.util.Scanner;
+import java.util.*;
+
 
 public class TicTacToeGame {
 	private static int currentPlayer;
@@ -92,18 +93,54 @@ public class TicTacToeGame {
 	public static char[] computerMove(char[] board, char computerLetter) {
 		board[7]='O';
 		board[5]='O';
+		
+		if(!findWinningMove(board)) {
+			System.out.print("hello");
+			findBlockingMove(board);
+		}
+		return board;
+	}
+	
+	public static boolean findWinningMove(char[] board) {
+		int count = 0;
+		for(int i=0; i<8;i++) {
+			count = 0;
+			
+			for(int j=0;j<3;j++) {
+				if(board[winningPositions[i][j]] == computerLetter) count++;
+			}
+			
+			if(count == 2) {
+				for(int j=0;j<3;j++) {
+					if(board[winningPositions[i][j]]== ' ') {
+						board[winningPositions[i][j]] = computerLetter;
+						return true;
+					}
+				}
+				
+			}
+		}
+		return false;
+	}
+	
+	public static void findBlockingMove(char[] board) {
 		int count = 0;
 		for(int i=0; i<8;i++) {
 			count = 0;
 			for(int j=0;j<3;j++) {
-				if(board[winningPositions[i][j]] == computerLetter) count++;
+				if(board[winningPositions[i][j]] == playerLetter) count++;
 			}
+			
 			if(count == 2) {
-				for(int j=0;j<3;j++) board[winningPositions[i][j]] = computerLetter ;
-				break;
+				for(int j=0;j<3;j++) {
+					if(board[winningPositions[i][j]]==' ') {
+						board[winningPositions[i][j]] = computerLetter ;
+						return;
+					}
+				}
 			}
 		}
-		return board;
+		
 	}
 	
 	public static void main(String[] args) {
@@ -121,6 +158,6 @@ public class TicTacToeGame {
 		board = computerMove(board, computerLetter);
 		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
 		resultFinder(board, currentLetter);
-		showBoard(board);
+		
 	}
 }
