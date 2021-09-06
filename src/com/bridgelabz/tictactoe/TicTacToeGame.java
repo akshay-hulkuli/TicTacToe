@@ -39,8 +39,14 @@ public class TicTacToeGame {
 	}
 	
 	public static char[] makeMove(char[] board, char playerLetter) {
-		System.out.println("Enter position(1-9) to make your move");
-		int position = sc.nextInt();
+		int position;
+		while(true) {
+			System.out.println("Enter position(1-9) to make your move");
+			position = sc.nextInt();
+			if(board[position] != ' ') System.out.println("Position is not available");
+			else break;
+		}
+		
 		board[position] = playerLetter;
 		return board;
 	}
