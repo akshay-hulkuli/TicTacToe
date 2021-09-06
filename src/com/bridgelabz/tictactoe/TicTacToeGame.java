@@ -94,10 +94,9 @@ public class TicTacToeGame {
 		if(findWinningMove(board)) return board;
 		if(findBlockingMove(board)) return board;
 		if(getCorner(board)) return board;
-		
+		if(getCenter(board)) return board;
+		getSides(board);
 		return board;
-		
-		
 	}
 	
 	public static boolean findWinningMove(char[] board) {
@@ -154,6 +153,25 @@ public class TicTacToeGame {
 		return false;
 	}
 	
+	public static boolean getCenter(char[] board) {
+		int center = 5;
+		if(board[center] == ' ') {
+			board[center] = computerLetter;
+			return true;
+		}
+		return false;
+	}
+	
+	public static void getSides(char[] board) {
+		int[] sides = {2,4,6,8};
+		for(int i=0;i<sides.length;i++) {
+			if(board[sides[i]] == ' ') {
+				board[sides[i]] = computerLetter;
+				break;
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
 		currentPlayer = getToss();
@@ -162,9 +180,8 @@ public class TicTacToeGame {
 		computerLetter = (playerLetter == 'X')?'O':'X';
 		System.out.println("Player letter : "+playerLetter+"  Computer letter : "+ computerLetter);
 		showBoard(board);
-		board = makeMove(board,playerLetter);
-		showBoard(board);
 
+		showBoard(board);
 		board = computerMove(board, computerLetter);
 		showBoard(board);
 		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
