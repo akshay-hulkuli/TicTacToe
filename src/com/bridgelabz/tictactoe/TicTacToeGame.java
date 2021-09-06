@@ -175,6 +175,7 @@ public class TicTacToeGame {
 	
 	public static void main(String[] args) {
 		System.out.println("Welcome to TIC-TAC-TOE game");
+		do {
 			
 			char[] board = creatBoard();
 			positionsLeft = 9;
@@ -191,6 +192,10 @@ public class TicTacToeGame {
 				if(resultFinder(board, currentLetter)) break;
 			}
 			System.out.println();
+			System.out.println("\n \npress 1 to play another game. 2 to exit");
+			if(sc.nextInt() != 1) break;
 			
+		} while(true);
+		
 	}
 }
