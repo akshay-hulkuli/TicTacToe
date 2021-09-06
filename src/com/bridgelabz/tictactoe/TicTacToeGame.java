@@ -91,14 +91,13 @@ public class TicTacToeGame {
 	}
 	
 	public static char[] computerMove(char[] board, char computerLetter) {
-		board[7]='O';
-		board[5]='O';
+		if(findWinningMove(board)) return board;
+		if(findBlockingMove(board)) return board;
+		if(getCorner(board)) return board;
 		
-		if(!findWinningMove(board)) {
-			System.out.print("hello");
-			findBlockingMove(board);
-		}
 		return board;
+		
+		
 	}
 	
 	public static boolean findWinningMove(char[] board) {
@@ -123,7 +122,7 @@ public class TicTacToeGame {
 		return false;
 	}
 	
-	public static void findBlockingMove(char[] board) {
+	public static boolean findBlockingMove(char[] board) {
 		int count = 0;
 		for(int i=0; i<8;i++) {
 			count = 0;
@@ -135,12 +134,24 @@ public class TicTacToeGame {
 				for(int j=0;j<3;j++) {
 					if(board[winningPositions[i][j]]==' ') {
 						board[winningPositions[i][j]] = computerLetter ;
-						return;
+						return true;
 					}
 				}
 			}
 		}
+		return false;
 		
+	}
+	
+	public static boolean getCorner(char[] board) {
+		int[] corners = {1,3,7,9};
+		for(int i=0;i<corners.length;i++) {
+			if(board[corners[i]] == ' ') {
+				board[corners[i]] = computerLetter;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static void main(String[] args) {
@@ -153,9 +164,9 @@ public class TicTacToeGame {
 		showBoard(board);
 		board = makeMove(board,playerLetter);
 		showBoard(board);
-		board = makeMove(board,playerLetter);
-		showBoard(board);
+
 		board = computerMove(board, computerLetter);
+		showBoard(board);
 		char currentLetter = (currentPlayer == 1)? playerLetter:computerLetter;
 		resultFinder(board, currentLetter);
 		
